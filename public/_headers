@@ -1,0 +1,4 @@
+/board/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; media-src 'self' blob: https://*.r2.cloudflarestorage.com; connect-src 'self' wss: https://*.r2.cloudflarestorage.com https://cloudflareinsights.com; frame-src https://www.youtube-nocookie.com; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

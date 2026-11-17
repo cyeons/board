@@ -1,0 +1,428 @@
+@import "tailwindcss";
+
+/*
+ * 디자인 토큰 v2 (plan.md 7장).
+ * 토스식 담백함: 연회색 바탕 위에 테두리 없는 흰 카드, 큰 굵은 제목, 꽉 찬 알약 버튼, 옅은 그림자.
+ * 포인트 색은 파랑(#2E6C96) 계열을 버튼에 쓰기 좋게 밝힌 값이다. 색은 Padlet처럼 카드 아이콘 타일과 모둠에만 쓴다.
+ */
+:root {
+  color-scheme: light;
+
+  --bg: #f2f4f7;
+  --surface: #ffffff;
+  --fill: #f2f4f7;
+  --fill-strong: #e6eaef;
+  --border: #e5e9ee;
+  --border-strong: #8b99a8;
+
+  --text: #17293b;
+  --text-muted: #56687a;
+  --text-faint: #8b99a8;
+
+  --accent: #1877c0;
+  --accent-press: #1466a6;
+  --accent-ink: #135f99;
+  --accent-soft: #e7f1fb;
+  --accent-soft-press: #d6e7f8;
+  --on-accent: #ffffff;
+
+  --danger: #c12f2f;
+  --danger-soft: #fdecec;
+
+  /* 카드 아이콘 타일. 카드마다 차례로 돌려 쓴다. */
+  --tile-1: #fff2d9;
+  --tile-2: #e2f5ec;
+  --tile-3: #fde8ee;
+  --tile-4: #e5f0fc;
+  --tile-5: #eeeafb;
+  --tile-6: #fcefe3;
+
+  /* 모둠: 칼럼 머리는 연한 바탕에 진한 글자. 진한 색은 흰 글자에도 쓴다. */
+  --group-1: #1e6b52;
+  --group-2: #84601f;
+  --group-3: #9a3f57;
+  --group-4: #135f99;
+  --group-1-soft: #e2f5ec;
+  --group-2-soft: #fff2d9;
+  --group-3-soft: #fde8ee;
+  --group-4-soft: #e5f0fc;
+
+  --shadow-base: 0 1px 2px rgba(23, 41, 59, 0.04), 0 6px 16px -10px rgba(23, 41, 59, 0.1);
+  --shadow-raised: 0 18px 44px -16px rgba(23, 41, 59, 0.28);
+
+  --duration-press: 0.1s;
+  --duration-base: 0.22s;
+  --duration-page: 0.42s;
+  --duration-rise: 0.5s;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --gutter: 16px;
+  /* 상단 바(AppBar)의 높이. 위쪽 여백(--safe-top)에 함께 넣어 모든 화면이 바 아래에서 시작한다 */
+  --bar-h: 44px;
+  --safe-top: calc(env(safe-area-inset-top, 0px) + var(--bar-h));
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --bar-h: 48px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fill: var(--fill);
+  --color-fill-strong: var(--fill-strong);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-on-accent: var(--on-accent);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --radius-hero: 28px;
+  --radius-card: 24px;
+  --radius-post: 20px;
+  --radius-control: 14px;
+
+  --text-xs: 13px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 28px;
+  --text-3xl: 34px;
+
+  --shadow-base: var(--shadow-base);
+  --shadow-raised: var(--shadow-raised);
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  /* 당겨서 새로고침은 앱이 직접 한다. 브라우저의 당김과 겹치지 않게 막는다. */
+  overscroll-behavior-y: contain;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button,
+[role="button"],
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+[role="button"] {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+@keyframes pop-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+/* 공통 부품. 유틸리티 클래스가 덮어쓸 수 있게 components 층에 둔다. */
+@custom-variant wide (@media (min-width: 640px), (orientation: landscape));
+
+@layer components {
+  /* 누르면 살짝 줄었다가, 떼면 스프링처럼 돌아온다 */
+  .press {
+    transition: transform 0.32s var(--ease-spring), background-color var(--duration-base), color var(--duration-base);
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.96);
+    transition-duration: var(--duration-press);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 48px;
+    padding: 0 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    position: relative;
+    transition: transform 0.32s var(--ease-spring), background-color var(--duration-base), color var(--duration-base), opacity var(--duration-base);
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.96);
+    transition-duration: var(--duration-press);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .btn-sm {
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+    --spinner: var(--on-accent);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-press);
+  }
+  /* 보조 버튼: 연한 블루 바탕. 흰 카드 위와 회색 바탕 위 어디서나 보인다. */
+  .btn-ghost {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    --spinner: var(--accent-ink);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--accent-soft-press);
+  }
+  /* 중립 버튼: 취소처럼 강조하지 않을 때 */
+  .btn-quiet {
+    background: var(--fill-strong);
+    color: var(--text);
+    --spinner: var(--text);
+  }
+  .btn-quiet:hover:not(:disabled) {
+    background: #dce2e8;
+  }
+  .btn-danger {
+    background: var(--danger-soft);
+    color: var(--danger);
+    --spinner: var(--danger);
+  }
+  /* 바쁜 버튼: 글자를 숨기고 같은 자리에 도는 표시를 둔다. 폭이 바뀌지 않는다. */
+  .btn[aria-busy="true"] {
+    color: transparent;
+    pointer-events: none;
+  }
+  .btn[aria-busy="true"]::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border: 2.5px solid var(--spinner, currentColor);
+    border-right-color: transparent;
+    animation: spin 0.7s linear infinite;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    color: var(--text-muted);
+    transition: transform 0.32s var(--ease-spring), background-color var(--duration-base), color var(--duration-base);
+  }
+  .icon-btn:hover:not(:disabled) {
+    background: var(--fill-strong);
+    color: var(--text);
+  }
+  .icon-btn:active:not(:disabled) {
+    transform: scale(0.9);
+    transition-duration: var(--duration-press);
+  }
+  .icon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* 입력칸: 테두리 대신 연회색 바탕. 누르면 흰 바탕과 블루 테두리. */
+  .field {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1.5px solid transparent;
+    border-radius: 14px;
+    background: var(--fill);
+    color: var(--text);
+    transition: border-color var(--duration-base), background-color var(--duration-base);
+  }
+  .field:hover {
+    background: var(--fill-strong);
+  }
+  .field:focus,
+  .field:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .field::placeholder {
+    color: var(--text-faint);
+  }
+
+  .surface {
+    background: var(--surface);
+    box-shadow: var(--shadow-base);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* Tossface. 기기마다 다른 이모지를 같은 모양으로 보여 준다. */
+  .emoji {
+    font-family: Tossface, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+    font-style: normal;
+    line-height: 1;
+  }
+  /* 카드 아이콘: 연한 색 둥근 타일 위의 이모지 */
+  .tile {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30%;
+    font-family: Tossface, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+    line-height: 1;
+  }
+
+  /* 팝오버 메뉴: 버튼 쪽에서 커지며 열리고, 닫힐 때도 움직인다 (Radix가 애니메이션이 끝날 때까지 기다린다) */
+  .menu-pop[data-state="open"] {
+    animation: pop-in 0.2s var(--ease-out);
+  }
+  .menu-pop[data-state="closed"] {
+    animation: pop-out 0.12s ease-in forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .menu-pop[data-state] {
+      animation-duration: 0.01s;
+    }
+  }
+
+  /* 열 때만 움직이는 전체 화면 창 (라이트박스, 입장 QR) */
+  .enter-fade {
+    animation: fade-in 0.2s ease-out;
+  }
+  .enter-zoom {
+    animation: zoom-in 0.32s var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .enter-zoom {
+      animation-name: fade-in;
+    }
+  }
+
+  .skeleton {
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--fill-strong) 0%, var(--fill) 50%, var(--fill-strong) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none;
+    }
+  }
+
+  .cover-fade {
+    mask-image: linear-gradient(to bottom, black 40%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent);
+  }
+  @media (min-width: 640px), (orientation: landscape) {
+    .cover-fade {
+      mask-image: linear-gradient(to right, black 40%, transparent);
+      -webkit-mask-image: linear-gradient(to right, black 40%, transparent);
+    }
+  }
+
+  /* iPhone은 16px보다 작은 입력칸을 누르면 화면을 확대한다 */
+  @media (pointer: coarse) {
+    .field {
+      font-size: 16px;
+    }
+  }
+}

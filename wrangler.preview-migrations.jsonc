@@ -1,0 +1,11 @@
+{
+  // 미리보기 D1에 마이그레이션을 적용할 때만 쓴다 (plan.md 19.1)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "board-preview",
+      "database_id": "00000000-0000-0000-0000-000000000001",
+      "migrations_dir": "worker/db/migrations"
+    }
+  ]
+}

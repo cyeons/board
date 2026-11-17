@@ -1,0 +1,62 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "board",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-30",
+  "workers_dev": true,
+  // 내 도메인에 붙이려면 아래 줄의 주석을 풀고 도메인을 바꾼다. 없으면 workers.dev 주소의 /board/에서 열린다
+  // "routes": [{ "pattern": "example.com/board/*", "zone_name": "example.com" }],
+  "assets": {
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/board/api/*", "/board/ws/*"]
+  },
+  "observability": {
+    "enabled": true,
+    "traces": { "enabled": true }
+  },
+  // npx wrangler d1 create board-prod 가 알려 주는 database_id를 적는다 (README)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "board-prod",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "worker/db/migrations"
+    }
+  ],
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "board-files-prod" }],
+  "durable_objects": {
+    "bindings": [
+      { "name": "LECTURE_ROOM", "class_name": "LectureRoom" },
+      { "name": "HELP_DESK", "class_name": "HelpDesk" },
+      { "name": "RATE_LIMITER", "class_name": "RateLimiter" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["LectureRoom", "HelpDesk"] },
+    // Rate Limiting 바인딩이 이 계정에서 막지 않아 대신 쓴다 (plan.md 14.3)
+    { "tag": "v2", "new_sqlite_classes": ["RateLimiter"] }
+  ],
+  "triggers": { "crons": ["0 15 * * *", "0 * * * *"] },
+  "vars": { "R2_BUCKET": "board-files-prod" },
+  "previews": {
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "board-preview",
+        "database_id": "00000000-0000-0000-0000-000000000001",
+        "migrations_dir": "worker/db/migrations"
+      }
+    ],
+    "r2_buckets": [{ "binding": "FILES", "bucket_name": "board-files-preview" }],
+    "durable_objects": {
+      "bindings": [
+        { "name": "LECTURE_ROOM", "class_name": "LectureRoom" },
+        { "name": "HELP_DESK", "class_name": "HelpDesk" },
+        { "name": "RATE_LIMITER", "class_name": "RateLimiter" }
+      ]
+    },
+    "vars": { "R2_BUCKET": "board-files-preview" },
+    "observability": { "enabled": true }
+  }
+}
